@@ -1,21 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { Avatar } from "@/components/ui/avatar";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { Download, Mail, Github, Linkedin, Twitter } from "lucide-react";
+import { Download, Mail, Github, Linkedin } from "lucide-react";
+import { site } from "@/lib/site";
 
 export default function HeroSection() {
   const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; delay: number }>>([]);
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 300], [0, 100]);
 
   useEffect(() => {
     const generateParticles = () => {
-      const newParticles = Array.from({ length: 50 }, (_, i) => ({
+      const newParticles = Array.from({ length: 24 }, (_, i) => ({
         id: i,
         x: Math.random() * 100,
         y: Math.random() * 100,
@@ -27,10 +26,9 @@ export default function HeroSection() {
   }, []);
 
   const socialLinks = [
-    { icon: Github, href: "https://github.com/sabteriqbal", label: "GitHub" },
-    { icon: Linkedin, href: "https://linkedin.com/in/sabteriqbal", label: "LinkedIn" },
-    { icon: Twitter, href: "https://twitter.com/sabteriqbal", label: "Twitter" },
-    { icon: Mail, href: "mailto:sabterrazaqadri@.com", label: "Email" },
+    { icon: Github, href: site.github, label: "GitHub" },
+    { icon: Linkedin, href: site.linkedin, label: "LinkedIn" },
+    { icon: Mail, href: `mailto:${site.email}`, label: "Email" },
   ];
 
   return (
@@ -74,18 +72,23 @@ export default function HeroSection() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                <h1 className="text-5xl lg:text-7xl font-bold text-foreground">
-                  {"Sabter Iqbal".split("").map((char, index) => (
-                    <motion.span
-                      key={index}
-                      initial={{ opacity: 0, y: 50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 + index * 0.05 }}
-                      className="inline-block"
-                    >
-                      {char === " " ? "\u00A0" : char}
-                    </motion.span>
-                  ))}
+                <h1
+                  aria-label={site.name}
+                  className="text-5xl lg:text-7xl font-bold text-foreground"
+                >
+                  <span aria-hidden="true">
+                    {site.name.split("").map((char, index) => (
+                      <motion.span
+                        key={index}
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.5 + index * 0.05 }}
+                        className="inline-block"
+                      >
+                        {char === " " ? "\u00A0" : char}
+                      </motion.span>
+                    ))}
+                  </span>
                 </h1>
               </motion.div>
 
@@ -95,7 +98,7 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.8 }}
               >
-                Full-Stack Developer & AI Enthusiast
+                Full-Stack Developer — AI Apps & E-commerce
               </motion.h2>
 
               <motion.p 
@@ -104,8 +107,8 @@ export default function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 1.0 }}
               >
-                Crafting digital experiences that blend cutting-edge technology with elegant design. 
-                I transform ideas into powerful, scalable solutions that drive innovation and user engagement.
+                I build AI-powered applications and e-commerce platforms with Next.js —
+                including live stores and AI tools serving real customers in Pakistan and the Gulf.
               </motion.p>
             </div>
 
@@ -152,6 +155,7 @@ export default function HeroSection() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={social.label}
                   className="p-3 rounded-full glass hover-lift group"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}

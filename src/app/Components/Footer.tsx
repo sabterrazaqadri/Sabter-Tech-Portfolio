@@ -2,25 +2,25 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Github, Linkedin, Twitter, Mail, Heart, ArrowUp, ExternalLink } from "lucide-react";
+import { Github, Linkedin, Mail, Heart, ArrowUp, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { site } from "@/lib/site";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const quickLinks = [
     { name: "Home", href: "/" },
-    { name: "About", href: "#about" },
-    { name: "Skills", href: "#skills" },
-    { name: "Projects", href: "#projects" },
+    { name: "About", href: "/#about" },
+    { name: "Skills", href: "/#skills" },
+    { name: "Projects", href: "/#projects" },
     { name: "Contact", href: "/contact" },
   ];
 
   const socialLinks = [
-    { icon: Github, href: "https://github.com/sabterrazaqadri", label: "GitHub" },
-    { icon: Linkedin, href: "https://www.linkedin.com/in/sabter-iqbal-4a3b702b4/", label: "LinkedIn" },
-    { icon: Twitter, href: "https://twitter.com/sabteriqbal", label: "Twitter" },
-    { icon: Mail, href: "mailto:sabterrazaqadri@gmail.com", label: "Email" },
+    { icon: Github, href: site.github, label: "GitHub" },
+    { icon: Linkedin, href: site.linkedin, label: "LinkedIn" },
+    { icon: Mail, href: `mailto:${site.email}`, label: "Email" },
   ];
 
   const scrollToTop = () => {
@@ -70,6 +70,7 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={social.label}
                     className="p-3 rounded-full glass hover-lift group"
                     initial={{ opacity: 0, scale: 0 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -131,11 +132,11 @@ export default function Footer() {
                   transition={{ duration: 0.5, delay: 0.5 }}
                 >
                   <Mail className="h-4 w-4" />
-                  <a 
-                    href="mailto:sabterrazaqadri@gmail.com"
+                  <a
+                    href={`mailto:${site.email}`}
                     className="hover:text-primary transition-colors"
                   >
-                    sabterrazaqadri@gmail.com
+                    {site.email}
                   </a>
                 </motion.div>
                 <motion.div
@@ -153,34 +154,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Newsletter Section */}
-        <motion.div
-          className="py-8 border-t border-border/50"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <div className="text-center space-y-4">
-            <h4 className="text-lg font-semibold text-foreground">
-              Stay Updated
-            </h4>
-            <p className="text-muted-foreground max-w-md mx-auto">
-              Get notified about new projects, tech insights, and development tips.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-lg bg-secondary border border-border focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-              />
-              <Button className="animated-gradient text-white border-0 hover-lift">
-                Subscribe
-              </Button>
-            </div>
-          </div>
-        </motion.div>
-
         {/* Bottom Bar */}
         <motion.div
           className="py-6 border-t border-border/50 flex flex-col sm:flex-row justify-between items-center gap-4"
@@ -190,14 +163,14 @@ export default function Footer() {
           transition={{ duration: 0.8, delay: 0.8 }}
         >
           <div className="flex items-center gap-2 text-muted-foreground">
-            <span>© {currentYear} Sabter Iqbal. Made with</span>
-            <motion.div
+            <span>© {currentYear} Made By Sabter Iqbal</span>
+            {/* <motion.div
               animate={{ scale: [1, 1.2, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
             >
               <Heart className="h-4 w-4 text-red-500" />
-            </motion.div>
-            <span>and Next.js</span>
+            </motion.div> */}
+            {/* <span>and Next.js</span> */}
           </div>
 
           <div className="flex items-center gap-4">
@@ -205,6 +178,7 @@ export default function Footer() {
               variant="ghost"
               size="icon"
               onClick={scrollToTop}
+              aria-label="Back to top"
               className="hover-lift"
             >
               <ArrowUp className="h-5 w-5" />

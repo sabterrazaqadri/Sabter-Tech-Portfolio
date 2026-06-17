@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import { Send, Mail, Phone, MapPin, CheckCircle, AlertCircle } from "lucide-react";
+import { site } from "@/lib/site";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -21,6 +22,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function ContactPage() {
   const [isFocused, setIsFocused] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "sent" | "error">("idle");
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -33,15 +35,16 @@ export default function ContactPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit = async (data: FormData) => {
+    setStatus("idle");
     try {
-      await fetch("https://formsubmit.co/ajax/sabterrazaqadri@gmail.com", {
+      const res = await fetch(`https://formsubmit.co/ajax/${site.email}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,9 +53,15 @@ export default function ContactPage() {
         body: JSON.stringify(data),
       });
 
+      if (!res.ok) {
+        throw new Error(`Form submission failed with status ${res.status}`);
+      }
+
       reset();
+      setStatus("sent");
     } catch (err) {
       console.error("Submission error:", err);
+      setStatus("error");
     }
   };
 
@@ -60,15 +69,15 @@ export default function ContactPage() {
     {
       icon: Mail,
       title: "Email",
-      value: "sabterrazaqadri@gmail.com",
-      href: "mailto:sabterrazaqadri@gmail.com",
+      value: site.email,
+      href: `mailto:${site.email}`,
       color: "from-blue-500 to-cyan-500"
     },
     {
       icon: Phone,
       title: "Phone",
       value: "+92 323 2714932",
-      href: "tel:+923232714932",
+      href: `tel:${site.phone}`,
       color: "from-green-500 to-green-600"
     },
     {
@@ -255,7 +264,7 @@ export default function ContactPage() {
                   </Button>
                 </motion.div>
 
-                {isSubmitSuccessful && (
+                {status === "sent" && (
                   <motion.div
                     className="flex items-center gap-2 text-green-600 p-4 rounded-lg bg-green-50 dark:bg-green-900/20"
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -263,6 +272,20 @@ export default function ContactPage() {
                   >
                     <CheckCircle className="h-5 w-5" />
                     <span>Message sent successfully! I'll get back to you soon.</span>
+                  </motion.div>
+                )}
+
+                {status === "error" && (
+                  <motion.div
+                    className="flex items-center gap-2 text-red-600 p-4 rounded-lg bg-red-50 dark:bg-red-900/20"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                  >
+                    <AlertCircle className="h-5 w-5" />
+                    <span>
+                      Something went wrong sending your message. Please email me
+                      directly at {site.email}.
+                    </span>
                   </motion.div>
                 )}
               </form>

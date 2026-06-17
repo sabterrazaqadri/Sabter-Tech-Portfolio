@@ -8,9 +8,9 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { name: "Home", href: "/" },
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Projects", href: "#projects" },
+  { name: "About", href: "/#about" },
+  { name: "Skills", href: "/#skills" },
+  { name: "Projects", href: "/#projects" },
   { name: "Contact", href: "/contact" },
 ];
 
@@ -28,13 +28,17 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains("dark");
-    setDarkMode(isDark);
+    // Theme class is applied before hydration by the inline script in layout.tsx
+    setDarkMode(document.documentElement.classList.contains("dark"));
   }, []);
 
   const toggleDarkMode = () => {
-    document.documentElement.classList.toggle("dark");
-    setDarkMode(!darkMode);
+    const next = !darkMode;
+    document.documentElement.classList.toggle("dark", next);
+    try {
+      localStorage.setItem("theme", next ? "dark" : "light");
+    } catch {}
+    setDarkMode(next);
   };
 
   return (
@@ -96,6 +100,7 @@ export default function Navbar() {
             variant="ghost"
             size="icon"
             onClick={toggleDarkMode}
+            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
             className="hover-lift"
           >
             <motion.div
@@ -112,6 +117,8 @@ export default function Navbar() {
             size="icon"
             className="md:hidden hover-lift"
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
           >
             <motion.div
               animate={{ rotate: menuOpen ? 180 : 0 }}
