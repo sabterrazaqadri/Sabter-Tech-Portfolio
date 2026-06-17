@@ -2,9 +2,10 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Github, Linkedin, Mail, MessageCircle, Phone, MapPin, Send, ArrowRight } from "lucide-react";
+import { Github, Mail, MessageCircle, Phone, Send, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { site } from "@/lib/site";
 
 export default function ContactSection() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
@@ -21,8 +22,8 @@ export default function ContactSection() {
     {
       icon: Mail,
       title: "Email",
-      description: "sabterrazaqadri@gmail.com",
-      href: "mailto:sabterrazaqadri@gmail.com",
+      description: site.email,
+      href: `mailto:${site.email}`,
       color: "from-blue-500 to-cyan-500",
       delay: 0.1
     },
@@ -30,7 +31,7 @@ export default function ContactSection() {
       icon: MessageCircle,
       title: "LinkedIn",
       description: "Connect professionally",
-      href: "https://www.linkedin.com/in/sabter-iqbal-4a3b702b4/",
+      href: site.linkedin,
       color: "from-blue-600 to-blue-700",
       delay: 0.2
     },
@@ -38,7 +39,7 @@ export default function ContactSection() {
       icon: Github,
       title: "GitHub",
       description: "View my projects",
-      href: "https://github.com/sabterrazaqadri",
+      href: site.github,
       color: "from-gray-700 to-gray-900",
       delay: 0.3
     },
@@ -46,17 +47,17 @@ export default function ContactSection() {
       icon: Phone,
       title: "WhatsApp",
       description: "Quick chat available",
-      href: "https://wa.me/923232714932",
+      href: site.whatsapp,
       color: "from-green-500 to-green-600",
       delay: 0.4
     }
   ];
 
   const stats = [
-    { number: "50+", label: "Projects Completed" },
+    { number: "50+", label: "Deployed Projects" },
+    { number: "10+", label: "Live E-commerce Stores" },
     { number: "3+", label: "Years Experience" },
-    { number: "100%", label: "Client Satisfaction" },
-    { number: "24/7", label: "Support Available" }
+    { number: "<24h", label: "Response Time" }
   ];
 
   return (
@@ -115,8 +116,8 @@ export default function ContactSection() {
               className="text-center p-6 rounded-2xl glass hover-lift"
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.4, delay: (index % 4) * 0.06 }}
               whileHover={{ scale: 1.05 }}
             >
               <h3 className="text-3xl font-bold gradient-text mb-2">{stat.number}</h3>
@@ -130,8 +131,8 @@ export default function ContactSection() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.5 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.4 }}
         >
           {contactMethods.map((method, index) => (
             <motion.div
@@ -139,8 +140,8 @@ export default function ContactSection() {
               className="group relative"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.4, delay: (index % 4) * 0.06 }}
               onHoverStart={() => setHoveredCard(method.title)}
               onHoverEnd={() => setHoveredCard(null)}
             >

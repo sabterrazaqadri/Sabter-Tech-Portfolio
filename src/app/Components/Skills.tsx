@@ -7,79 +7,69 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 
 const skills = [
-  { 
-    name: "Python", 
-    icon: "/skills/python.svg", 
-    level: 95,
-    category: "Backend",
-    description: "Advanced Python development with Django, FastAPI, and ML libraries"
-  },
-  { 
-    name: "OpenAI SDK", 
-    icon: "/skills/openai.svg", 
-    level: 90,
-    category: "AI/ML",
-    description: "Expert in OpenAI API integration and custom AI solutions"
-  },
-  { 
-    name: "React", 
-    icon: "/skills/react.svg", 
-    level: 95,
-    category: "Frontend",
-    description: "Modern React development with hooks, context, and performance optimization"
-  },
-  { 
-    name: "Next.js", 
-    icon: "/skills/nextjs.svg", 
-    level: 92,
+  {
+    name: "Next.js",
+    icon: "/skills/nextjs.svg",
     category: "Full-Stack",
-    description: "Full-stack development with Next.js 14, App Router, and server components"
+    description: "App Router, server components, and full-stack apps — used in every project below"
   },
-  { 
-    name: "TypeScript", 
-    icon: "/skills/typescript.svg", 
-    level: 88,
+  {
+    name: "React",
+    icon: "/skills/react.svg",
+    category: "Frontend",
+    description: "Hooks, context, and performance-focused component architecture"
+  },
+  {
+    name: "TypeScript",
+    icon: "/skills/typescript.svg",
     category: "Language",
-    description: "Type-safe development with advanced TypeScript patterns"
+    description: "Type-safe development across all my production projects"
   },
-  { 
-    name: "Tailwind", 
-    icon: "/skills/tailwind.svg", 
-    level: 90,
-    category: "Styling",
-    description: "Modern CSS framework for rapid UI development"
-  },
-  { 
-    name: "Gemini API", 
-    icon: "/skills/gemini.svg", 
-    level: 85,
+  {
+    name: "OpenAI SDK",
+    icon: "/skills/openai.svg",
     category: "AI/ML",
-    description: "Google Gemini integration for AI-powered applications"
+    description: "Powers Digital Mufti and MakeAPP-AI — chat, RAG, and agent workflows"
   },
-  { 
-    name: "Sanity", 
-    icon: "/skills/sanity.svg", 
-    level: 80,
-    category: "CMS",
-    description: "Headless CMS for content management and delivery"
+  {
+    name: "Gemini API",
+    icon: "/skills/gemini.svg",
+    category: "AI/ML",
+    description: "Multi-model AI integration alongside OpenAI in production apps"
   },
-  { 
-    name: "Vercel", 
-    icon: "/skills/vercel.svg", 
-    level: 85,
-    category: "Deployment",
-    description: "Cloud platform for deployment and hosting"
-  },
-  { 
-    name: "Node.js", 
-    icon: "/skills/nodejs.svg", 
-    level: 88,
+  {
+    name: "Python",
+    icon: "/skills/python.svg",
     category: "Backend",
-    description: "Server-side JavaScript with Express and modern Node.js features"
+    description: "Backend services and AI tooling with FastAPI and Chainlit"
+  },
+  {
+    name: "Node.js",
+    icon: "/skills/nodejs.svg",
+    category: "Backend",
+    description: "Server-side JavaScript behind my e-commerce checkout flows"
+  },
+  {
+    name: "Tailwind",
+    icon: "/skills/tailwind.svg",
+    category: "Styling",
+    description: "Every UI on this site and my projects is built with Tailwind"
+  },
+  {
+    name: "Sanity",
+    icon: "/skills/sanity.svg",
+    category: "CMS",
+    description: "Headless CMS powering Apni Dukan and the Naat Collection admin panel"
+  },
+  {
+    name: "Vercel",
+    icon: "/skills/vercel.svg",
+    category: "Deployment",
+    description: "Deployment and hosting for all my live projects"
   },
 ];
 
-const categories = ["All", "Frontend", "Backend", "AI/ML", "Full-Stack", "Language", "Styling", "CMS", "Deployment"];
+const categories = ["All", ...new Set(skills.map((s) => s.category))];
 
 export default function SkillsSection() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -92,8 +82,8 @@ export default function SkillsSection() {
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 0]);
 
-  const filteredSkills = selectedCategory === "All" 
-    ? skills 
+  const filteredSkills = selectedCategory === "All"
+    ? skills
     : skills.filter(skill => skill.category === selectedCategory);
 
   return (
@@ -115,21 +105,21 @@ export default function SkillsSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <motion.h2 
+          <motion.h2
             className="text-4xl lg:text-6xl font-bold gradient-text mb-6"
             style={{ y, opacity }}
           >
             Skills & Expertise
           </motion.h2>
-          <motion.p 
+          <motion.p
             className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Mastery in modern web technologies and AI integration. 
-            Each skill represents years of hands-on experience and continuous learning.
+            Every skill here is proven by a shipped project — hover any card to see
+            where I've used it in production.
           </motion.p>
         </motion.div>
 
@@ -145,6 +135,7 @@ export default function SkillsSection() {
             <motion.button
               key={category}
               onClick={() => setSelectedCategory(category)}
+              aria-pressed={selectedCategory === category}
               className={`px-6 py-3 rounded-full font-medium transition-all duration-300 hover-lift ${
                 selectedCategory === category
                   ? "bg-primary text-primary-foreground shadow-lg"
@@ -152,8 +143,8 @@ export default function SkillsSection() {
               }`}
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -164,20 +155,20 @@ export default function SkillsSection() {
 
         {/* Skills Grid */}
         <TooltipProvider>
-          <motion.div 
+          <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.5 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.4 }}
           >
             {filteredSkills.map((skill, index) => (
               <motion.div
                 key={skill.name}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.4, delay: (index % 4) * 0.06 }}
               >
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -196,11 +187,6 @@ export default function SkillsSection() {
                               height={60}
                               className="transition-transform duration-300 group-hover:scale-110"
                             />
-                            <motion.div
-                              className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/20 to-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                              initial={{ scale: 0 }}
-                              whileHover={{ scale: 1 }}
-                            />
                           </motion.div>
 
                           {/* Skill Info */}
@@ -213,22 +199,9 @@ export default function SkillsSection() {
                             </span>
                           </div>
 
-                          {/* Progress Bar */}
-                          <div className="w-full space-y-2">
-                            <div className="flex justify-between text-xs text-muted-foreground">
-                              <span>Proficiency</span>
-                              <span>{skill.level}%</span>
-                            </div>
-                            <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
-                              <motion.div
-                                className="h-full bg-gradient-to-r from-primary to-secondary rounded-full"
-                                initial={{ width: 0 }}
-                                whileInView={{ width: `${skill.level}%` }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 1, delay: 0.8 + index * 0.1 }}
-                              />
-                            </div>
-                          </div>
+                          <p className="text-sm text-muted-foreground leading-relaxed">
+                            {skill.description}
+                          </p>
                         </div>
                       </CardContent>
                     </Card>
@@ -237,10 +210,6 @@ export default function SkillsSection() {
                     <div className="space-y-2">
                       <h4 className="font-semibold">{skill.name}</h4>
                       <p className="text-sm text-muted-foreground">{skill.description}</p>
-                      <div className="flex justify-between text-xs">
-                        <span>Proficiency: {skill.level}%</span>
-                        <span>{skill.category}</span>
-                      </div>
                     </div>
                   </TooltipContent>
                 </Tooltip>
@@ -258,16 +227,16 @@ export default function SkillsSection() {
           transition={{ duration: 0.8, delay: 1.0 }}
         >
           <div className="text-center p-6 rounded-2xl glass">
-            <h3 className="text-3xl font-bold gradient-text mb-2">10+</h3>
-            <p className="text-muted-foreground">Technologies Mastered</p>
+            <h3 className="text-3xl font-bold gradient-text mb-2">8</h3>
+            <p className="text-muted-foreground">Deployed Projects</p>
+          </div>
+          <div className="text-center p-6 rounded-2xl glass">
+            <h3 className="text-3xl font-bold gradient-text mb-2">3</h3>
+            <p className="text-muted-foreground">Live E-commerce Stores</p>
           </div>
           <div className="text-center p-6 rounded-2xl glass">
             <h3 className="text-3xl font-bold gradient-text mb-2">3+</h3>
             <p className="text-muted-foreground">Years of Experience</p>
-          </div>
-          <div className="text-center p-6 rounded-2xl glass">
-            <h3 className="text-3xl font-bold gradient-text mb-2">50+</h3>
-            <p className="text-muted-foreground">Projects Completed</p>
           </div>
         </motion.div>
       </div>

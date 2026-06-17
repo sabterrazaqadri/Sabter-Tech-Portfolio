@@ -1,8 +1,9 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar } from "@/components/ui/avatar";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useRef } from "react";
 import { Code, Zap, Palette, Users, TrendingUp, Heart } from "lucide-react";
 
@@ -107,7 +108,7 @@ export default function AboutMeSection() {
                   animate={{ y: [5, -5, 5] }}
                   transition={{ duration: 3, repeat: Infinity, delay: 1 }}
                 >
-                  AI Expert
+                  AI Builder
                 </motion.div>
               </div>
             </div>
@@ -120,7 +121,7 @@ export default function AboutMeSection() {
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               <h3 className="text-2xl font-bold text-foreground">Sabter Iqbal</h3>
-              <p className="text-muted-foreground">Full-Stack Developer & AI Enthusiast</p>
+              <p className="text-muted-foreground">Full-Stack Developer — AI Apps & E-commerce</p>
               <div className="flex justify-center space-x-4 text-sm text-muted-foreground">
                 <span>📍 Remote</span>
                 <span>💼 Available for hire</span>
@@ -143,8 +144,8 @@ export default function AboutMeSection() {
                 className="group p-6 rounded-2xl glass hover-lift cursor-pointer"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.4, delay: (index % 2) * 0.08 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -177,13 +178,18 @@ export default function AboutMeSection() {
           <p className="text-lg text-muted-foreground mb-6">
             Ready to bring your ideas to life? Let's create something amazing together.
           </p>
-          <motion.button
-            className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-semibold hover-lift animated-gradient"
+          <motion.div
+            className="inline-block"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Let's Work Together
-          </motion.button>
+            <Link
+              href="/contact"
+              className="inline-block px-8 py-4 bg-primary text-primary-foreground rounded-full font-semibold hover-lift animated-gradient text-white"
+            >
+              Let's Work Together
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
     </section>
